@@ -15,7 +15,7 @@ namespace :data_parser do
     Action.create(actions)
   end
 
-  desc "TODO"
+  desc "Parse raw data for cuisine types"
   task parse_cuisines: :environment do
     Cuisine.destroy_all
     cuisines = []
@@ -29,27 +29,31 @@ namespace :data_parser do
     Cuisine.create(cuisines)
   end
 
-  desc "TODO"
+  desc "Parse raw data for restaurant violations"
   task parse_violations: :environment do
     Violation.destroy_all
-    violations = []
-    CSV.open('/Users/macadocious/Downloads/dohmh_restaurant-inspections_002/Violation.txt', encoding: 'windows-1251:utf-8') do |csv|
-      csv.each do |row|
-        if row[0].match(/2010/)
-          violation = {
-            code: row[3],
-            critical_violation: row[2] == "Y" ? true : false,
-            description: row[4].strip
-          }
-          violations << violation
-        end
+    unsanitized_lines = []
+    violation_file = File.open('/Users/macadocious/Downloads/dohmh_restaurant-inspections_002/Violation.txt', encoding: 'windows-1251:utf-8')
+    violation_file.each_line("\r\n") do |line|
+      if line.match(/2008-07-01/)
+        unsanitized_lines.push(line)
       end
+    end
+    violations = unsanitized_lines.map do |line|
+      split_line = line.split("\",\"")
+      split_line[4] = split_line[4].match("\"\"") ? split_line[4].gsub("\"", "'") : split_line[4]
+      compiled_violation = {
+        code: split_line[3],
+        critical_violation: split_line[2] == "Y" ? true : false,
+        description: split_line[4]
+      }
     end
     Violation.create(violations)
   end
 
-  desc "TODO"
+  desc "Parse raw data for restaurant and inspection information"
   task parse_restaurant: :environment do
+
   end
 
 end
