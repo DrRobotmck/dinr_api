@@ -6,11 +6,22 @@ gem 'rails-api'
 
 gem 'spring', :group => :development
 
+gem 'pg'
+
 gem 'geocoder'
 
-gem 'pry-rails', group: :development
-
-gem 'pg'
+# Test suite
+group :test, :development do
+  gem 'rspec-rails'
+  gem 'pry-rails'
+  gem 'factory_girl_rails'
+  gem 'ffaker'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'launchy'
+  gem 'shoulda-matchers'
+  gem 'simplecov', require: false
+end
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 

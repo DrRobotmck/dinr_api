@@ -23,14 +23,6 @@ ActiveRecord::Schema.define(version: 20140922201447) do
     t.datetime "updated_at"
   end
 
-  create_table "actions_inspections", id: false, force: true do |t|
-    t.integer "action_id",     null: false
-    t.integer "inspection_id", null: false
-  end
-
-  add_index "actions_inspections", ["action_id"], name: "index_actions_inspections_on_action_id", using: :btree
-  add_index "actions_inspections", ["inspection_id"], name: "index_actions_inspections_on_inspection_id", using: :btree
-
   create_table "boros", force: true do |t|
     t.integer "identifier"
     t.string  "name"
@@ -55,6 +47,7 @@ ActiveRecord::Schema.define(version: 20140922201447) do
     t.date     "date_inspected"
     t.integer  "score"
     t.integer  "restaurant_id"
+    t.integer  "action_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

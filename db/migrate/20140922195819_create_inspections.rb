@@ -4,6 +4,7 @@ class CreateInspections < ActiveRecord::Migration
       t.date :date_inspected
       t.integer :score
       t.belongs_to :restaurant
+      t.belongs_to :action
 
       t.timestamps
     end
