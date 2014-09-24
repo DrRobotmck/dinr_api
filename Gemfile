@@ -21,6 +21,7 @@ group :test, :development do
   gem 'launchy'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
+  gem 'database_cleaner'
 end
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
