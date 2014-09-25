@@ -22,6 +22,7 @@ group :test, :development do
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'database_cleaner'
+  gem 'nyan-cat-formatter'
 end
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
