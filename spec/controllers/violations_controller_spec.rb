@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe API::ViolationsController, type: :controller do
+RSpec.describe Api::ViolationsController, type: :controller do
   describe 'GET #index' do
     it 'responds successfully with an HTTP 200 status code' do
       get :index
@@ -25,4 +25,5 @@ RSpec.describe API::ViolationsController, type: :controller do
       expect(response.body).to eq(violations.to_xml)
     end
   end
+  DatabaseCleaner.clean
 end

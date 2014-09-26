@@ -5,7 +5,7 @@ class Restaurant < ActiveRecord::Base
 
   def self.fetch(params)
     sanitized_params = self.sanitize_params(params)
-    self.where(sanitized_params)
+    query_results = self.search(sanitized_params)
   end
 
   def self.sanitize_params(params)
@@ -17,9 +17,7 @@ class Restaurant < ActiveRecord::Base
       params['cuisine_id'] = set_cuisine(params)
       params.delete('cuisine')
     end
-    if params.keys.include?('current_grade')
-      params[:current_grade].capitalize!
-    end
+    params[:current_grade].capitalize! if params.keys.include?('current_grade')
     params
   end
 
@@ -32,5 +30,13 @@ class Restaurant < ActiveRecord::Base
     cuisine = params[:cuisine].downcase
     return Cuisine.find_by('LOWER(description) = ?', cuisine).id
   end
-
+  def self.search(params)
+    if params.keys.include?('dba')
+      all_matches = self.where('LOWER(dba) LIKE ?','%'+params[:dba].downcase+'%')
+      params.delete('dba')
+      all_matches.where(params)
+    else
+      self.where(params)
+    end
+  end
 end

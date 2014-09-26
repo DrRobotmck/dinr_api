@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe API::ActionsController, type: :controller do
+RSpec.describe Api::ActionsController, type: :controller do
   describe 'GET #index' do
     before :each do
       @actions = [Action.create!, Action.create!, Action.create!]
@@ -26,4 +26,5 @@ RSpec.describe API::ActionsController, type: :controller do
       expect(response.body).to eq(@actions.to_xml)
     end
   end
+  DatabaseCleaner.clean
 end
