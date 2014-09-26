@@ -11,7 +11,6 @@ RSpec.describe Api::ActionsController, type: :controller do
       expect(response).to have_http_status(200)
     end
     it 'loads all actions into @actions' do
-      # actions = [Action.create!, Action.create!, Action.create!]
       get :index
       expect(assigns(:actions)).to match_array(@actions)
     end

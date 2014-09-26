@@ -5,6 +5,7 @@ namespace :data_parser do
     Action.destroy_all
     actions = []
     CSV.open('/Users/macadocious/Downloads/dohmh_restaurant-inspections_002/Action.txt', encoding: 'windows-1251:utf-8') do |csv|
+      # map? scope?
       csv.each do |row|
         if row[0].match(/2010/)
           actions << { code: row[2].strip, description: row[3] == "" ? "N/A" : row[3] }

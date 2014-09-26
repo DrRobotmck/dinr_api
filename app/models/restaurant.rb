@@ -9,6 +9,7 @@ class Restaurant < ActiveRecord::Base
   end
 
   def self.sanitize_params(params)
+    params.delete('camis') if params.keys.include?('camis')
     if params.keys.include?('boro')
       params['boro_id'] = set_boro(params)
       params.delete('boro')
@@ -30,6 +31,7 @@ class Restaurant < ActiveRecord::Base
     cuisine = params[:cuisine].downcase
     return Cuisine.find_by('LOWER(description) = ?', cuisine).id
   end
+  
   def self.search(params)
     if params.keys.include?('dba')
       all_matches = self.where('LOWER(dba) LIKE ?','%'+params[:dba].downcase+'%')
