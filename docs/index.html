@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dinr-API</title>
+  <style>
+    body{
+      background: url(http://subtlepatterns.com/patterns/tree_bark.png);
+      margin:0;
+    }
+    h1{
+      font-size: 80px;
+      font-family: Arial;
+      margin: 0;
+    }
+    p{
+      font-size: 20px;
+      font-family: Arial;
+    }
+    footer{
+      position:absolute;
+      bottom:0;
+      text-align:center;
+      font-size:15px;
+      font-family: Arial;
+      width: 100%;
+    }
+    #container{
+      margin:0;
+      width: 100%;
+      min-height:768px;
+      background: rgba(255,255,255,.5);
+    }
+  </style>
+</head>
+<body>
+  <div id='container'>
+    <header>
+      <h1>DinrAPI</h1>
+      <p>An API built to provide easy access to the Health Inspection results for NYC's over 24000 food service establishments.</p>
+      <h6>Data provided by NYC OpenData</h6>
+    </header>
+    <section>
+      Accessing the API
+    </section>
+    <aside>Endpoints</aside>
+    <aside>
+      <p>Try it out!</p>
+      <input type="text" name='camis' placeholder='CAMIS Number'>
+      <input type="text" name='zip-code' placeholder='Zip Code'>
+      <input type="text" name='dba' placeholder='Name/DBA'>
+      <label for="">Current Grade
+      <select name="" id="">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      </select>
+    </label>
+      <select name="" id="">
+        <option value="Manhattan">Manhattan</option>
+        <option value="Brooklyn">Brooklyn</option>
+        <option value="Bronx">Bronx</option>
+        <option value="Queens">Queens</option>
+        <option value="Staten Island">Staten Island</option>
+      </select>
+      <button>Search</button>
+</aside>
+
+    <footer>Built somewhere in Brooklyn. &copy DrRobotmck</footer>
+  </div>
+</body>
+</html>
