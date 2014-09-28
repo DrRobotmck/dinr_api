@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'application#index'
   namespace :api do
     # Violation routing
     get 'violations' => 'violations#index', defaults: {format: :json}

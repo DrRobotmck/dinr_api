@@ -4,7 +4,7 @@ namespace :data_parser do
   task parse_actions: :environment do
     Action.destroy_all
     actions = []
-    CSV.open('/Users/macadocious/Downloads/dohmh_restaurant-inspections_002/Action.txt', encoding: 'windows-1251:utf-8') do |csv|
+    CSV.open("#{ENV['FILE_ROOT']}/Action.txt", encoding: 'windows-1251:utf-8') do |csv|
       # map? scope?
       csv.each do |row|
         if row[0].match(/2010/)
@@ -19,7 +19,7 @@ namespace :data_parser do
   task parse_cuisines: :environment do
     Cuisine.destroy_all
     cuisines = []
-    CSV.open('/Users/macadocious/Downloads/dohmh_restaurant-inspections_002/Cuisine.txt', encoding: 'windows-1251:utf-8') do |csv|
+    CSV.open("#{ENV['FILE_ROOT']}/Cuisine.txt", encoding: 'windows-1251:utf-8') do |csv|
       csv.each do |row|
         if row[0].match(/\d{2}/)
           cuisines << { code: row[0].strip, description: row[1].strip }
@@ -33,7 +33,7 @@ namespace :data_parser do
   task parse_violations: :environment do
     Violation.destroy_all
     unsanitized_lines = []
-    violation_file = File.open('/Users/macadocious/Downloads/dohmh_restaurant-inspections_002/Violation.txt', encoding: 'windows-1251:utf-8')
+    violation_file = File.open("#{ENV['FILE_ROOT']}/Violation.txt", encoding: 'windows-1251:utf-8')
     violation_file.each_line("\r\n") do |line|
       if line.match(/2008-07-01/)
         unsanitized_lines.push(line)
@@ -56,7 +56,7 @@ namespace :data_parser do
     Restaurant.destroy_all
     Inspection.destroy_all
     sanitized_lines = []
-    restaurant_file = File.open('/Users/macadocious/Downloads/dohmh_restaurant-inspections_002/WebExtract.txt', encoding: 'windows-1251:utf-8')
+    restaurant_file = File.open("#{ENV['FILE_ROOT']}/WebExtract.txt", encoding: 'windows-1251:utf-8')
     restaurant_file.each_with_index("\r\n") do |line, index|
       sanitized_lines << line.split("\",\"").map{|column| column.gsub("\"","")}
     end
