@@ -25,7 +25,7 @@ module Api
     end
 
     def by_camis
-      @restaurant = Restaurant.find_by(camis: request_params[:camis])
+      @restaurant = Restaurant.find_by(camis: params[:camis])
       respond_to do |format|
         format.html {}
         format.json {}

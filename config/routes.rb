@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     # Action routing
     get 'actions' => 'actions#index', defaults: {format: :json}
     # Restaurant routing
-    get 'restaurants/camis' => 'restaurants#by_camis',
+    get 'camis/:camis' => 'restaurants#by_camis',
       defaults: {format: :json},
       as: 'camis'
     resources :restaurants, only: [:index, :show], defaults: {format: :json}
