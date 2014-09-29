@@ -1,6 +1,6 @@
 # Dinr API Documentation
 
-Dinr provides a web API for NYC food service establishment health inspection results.
+Dinr provides a web API for NYC food service establishment health inspection results. All information is provided by [NYC Open Data](https://data.cityofnewyork.us/Health/Restaurant-Inspection-Results/4vkw-7nck)
 
 ## Access to the API
 
