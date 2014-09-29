@@ -17,7 +17,6 @@ dinr-api.mckenneth.com
 - camis
 - actions
 - violations
-- cuisines
 
 ## Restaurants Endpoint
 #### Path
@@ -412,12 +411,7 @@ The actions endpoint provides information related to the inspection action codes
   }
 ]
 ```
-## Cuisines Endpoint
-The cuisines endpoint provides information related to the restaurant cuisine codes and their related descriptions.
-#### Path
-```
-/api/cuisines
-```
+
 ## Violations Endpoint
 The violations endpoint provides information related to all currently citable violations for restaurants in NYC. The violation code and description is provided.
 #### Path
