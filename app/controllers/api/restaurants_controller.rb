@@ -10,20 +10,8 @@ module Api
       end
       respond_to do |format|
         format.html {}
-        format.json do
-          if @restaurants.nil?
-            render json: 'Error: Bad Request', status: 400
-          else
-            render json: @restaurants, status: 200
-          end
-        end
-        format.xml do
-          if @restaurants.nil?
-            render xml: 'Error: Bad Request', status: 400
-          else
-            render xml: @restaurants, status: 200
-          end
-        end
+        format.json {}
+        format.xml  {}
       end
     end
 
@@ -31,24 +19,8 @@ module Api
       @restaurant = Restaurant.find_by(request_params)
       respond_to do |format|
         format.html {}
-        format.json do
-          if @restaurant.nil?
-            render json: 'Error: Bad Request', status: 400
-          else
-            render json: @restaurant.to_json(include: {
-              inspections: { include: :violations }
-              }), status: 200
-          end
-        end
-        format.xml do
-          if @restaurant.nil?
-            render xml: 'Error: Bad Request', status: 400
-          else
-            render xml: @restaurant.to_xml(include: {
-              inspections: { include: :violations }
-              }), status: 200
-          end
-        end
+        format.json {}
+        format.xml  {}
       end
     end
 
@@ -56,24 +28,8 @@ module Api
       @restaurant = Restaurant.find_by(camis: request_params[:camis])
       respond_to do |format|
         format.html {}
-        format.json do
-          if @restaurant.nil?
-            render json: 'Error: Bad CAMIS', status: 400
-          else
-            render json: @restaurant.to_json(include: {
-              inspections: { include: :violations }
-              }), status: 200
-          end
-        end
-        format.xml do
-          if @restaurant.nil?
-            render xml: 'Error: BAD CAMIS', status: 400
-          else
-            render xml: @restaurant.to_xml(include: {
-              inspections: { include: :violations }
-              }), status: 200
-          end
-        end
+        format.json {}
+        format.xml  {}
       end
     end
 

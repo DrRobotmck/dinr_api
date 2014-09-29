@@ -25,7 +25,7 @@ RSpec.describe Api::RestaurantsController, type: :controller do
         ]
     end
     it 'responds successfully with an HTTP 200 status code' do
-      get :index
+      get :index, format: :json
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
@@ -46,7 +46,7 @@ RSpec.describe Api::RestaurantsController, type: :controller do
     it 'returns results based on params' do
       request.env['HTTP_ACCEPT'] = 'application/json'
       get :index, dba: 'Subway'
-      expect(response.body).to eq([@restaurants[0], @restaurants[1]].to_json)
+      expect(response.body).to eq()
     end
     it 'returns results based on multiple params' do
       request.env['HTTP_ACCEPT'] = 'application/json'
