@@ -86,4 +86,13 @@ namespace :data_parser do
     end
   end
 
+  desc "Fix violations"
+  task fix_violations: :environment do
+    all_violations = Violation.all
+    all_violations.each do |violation|
+      violation.description = violation.description.gsub("\"", "")
+      violation.save
+    end
+  end
+
 end
