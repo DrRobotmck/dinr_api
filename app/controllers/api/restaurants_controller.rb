@@ -3,13 +3,14 @@ module Api
 
     def index
       param_regex = /(dba|cuisine|boro|current_grade|zip_code)/
-      if request.params[:all] == 'true'
+      if params[:all] == 'true'
         @restaurants = Restaurant.all
       elsif request_params.keys.join(',').match param_regex
         @restaurants = Restaurant.fetch(request_params)
+      else
+        @restaurants = Restaurant.limit(50)
       end
       respond_to do |format|
-        format.html {}
         format.json {}
         format.xml  {}
       end
@@ -17,8 +18,8 @@ module Api
 
     def show
       @restaurant = Restaurant.find_by(request_params)
+      catch_missing_restaurant
       respond_to do |format|
-        format.html {}
         format.json {}
         format.xml  {}
       end
@@ -26,14 +27,18 @@ module Api
 
     def by_camis
       @restaurant = Restaurant.find_by(camis: params[:camis])
+      catch_missing_restaurant
       respond_to do |format|
-        format.html {}
         format.json {}
         format.xml  {}
       end
     end
 
     private
+
+    def catch_missing_restaurant
+      render status: :unprocessable_entity, nothing: true unless @restaurant
+    end
 
     def request_params
       params.permit(:dba, :current_grade, :boro, :cuisine, :id, :zip_code, :camis)
