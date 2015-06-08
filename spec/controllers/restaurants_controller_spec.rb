@@ -92,25 +92,16 @@ RSpec.describe Api::RestaurantsController, type: :controller do
         boro_id: boro.id,
         cuisine_id: cuisine.id
         })
-      inspection_one = Inspection.create!(score: 15)
-      inspection_two = Inspection.create!(score: 12)
-      violation_one = Violation.create!(critical_violation: true, code: '6A')
-      violation_two = Violation.create!(critical_violation: false, code: '6B')
-      inspection_one.violations << violation_one
-      inspection_two.violations << violation_two
-      action.inspections << inspection_one
-      action.inspections << inspection_two
-      restaurant.inspections << inspection_one << inspection_two
     end
     
     it 'responds successfully with an HTTP 200 status code' do
-      get :show, id: restaurant.id
+      get :show, id: restaurant.id, format: :json
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
     
     it 'loads all of the restaurant data into restaurant' do
-      get :show, id: restaurant.id
+      get :show, id: restaurant.id, format: :json
       expect(assigns(:restaurant)).to match(restaurant)
     end
 
@@ -129,52 +120,42 @@ RSpec.describe Api::RestaurantsController, type: :controller do
     end
   end
 
-  # describe 'GET #by_camis' do
-  #   before :each do
-  #     boro = Boro.create!(name: 'Manhattan')
-  #     cuisine = Cuisine.create!(description: 'Filipino')
-  #     action = Action.create!(description: 'U')
-  #     restaurant = Restaurant.create!({
-  #       camis: 12345678,
-  #       dba: "Subway",
-  #       current_grade: 'A',
-  #       boro_id: boro.id,
-  #       cuisine_id: cuisine.id
-  #       })
-  #     inspection_one = Inspection.create!(score: 15)
-  #     inspection_two = Inspection.create!(score: 12)
-  #     violation_one = Violation.create!(critical_violation: true, code: '6A')
-  #     violation_two = Violation.create!(critical_violation: false, code: '6B')
-  #     inspection_one.violations << violation_one
-  #     inspection_two.violations << violation_two
-  #     action.inspections << inspection_one
-  #     action.inspections << inspection_two
-  #     restaurant.inspections << inspection_one << inspection_two
-  #   end
-  #   it 'responds successfully with an HTTP 200 status code' do
-  #     expect(response).to be_success
-  #     expect(response).to have_http_status(200)
-  #   end
-  #   it 'loads the restaurant data into restaurant' do
-  #     get :by_camis, camis: 12345678
-  #     expect(assigns(:restaurant)).to match(restaurant)
-  #   end
-  #   context 'returns a restaurant based on camis number' do
-  #     it 'returns a restaurant with a valid camis' do
-  #       request.env['HTTP_ACCEPT'] = 'application/json'
-  #       expected_result = restaurant.to_json(include: {
-  #         inspections: { include: :violations }
-  #         })
-  #       get :by_camis, camis: 12345678
-  #       expect(response.body).to eq(expected_result)
-  #     end
-  #     it 'returns a 400 code if the camis does not exist' do
-  #       request.env['HTTP_ACCEPT'] = 'application/json'
-  #       get :by_camis, camis: 87654321
-  #       expect(response).to_not be_success
-  #       expect(response).to have_http_status(400)
-  #     end
-  #   end
-  # end
+  describe 'GET #by_camis' do
+    restaurant = nil
+    before :each do
+      boro = Boro.create!(name: 'Manhattan')
+      cuisine = Cuisine.create!(description: 'Filipino')
+      action = Action.create!(description: 'U')
+      restaurant = Restaurant.create!({
+        camis: 12345678,
+        dba: "Subway",
+        current_grade: 'A',
+        boro_id: boro.id,
+        cuisine_id: cuisine.id
+      })
+    end
+
+    it 'responds successfully with an HTTP 200 status code' do
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it 'loads the restaurant data into restaurant' do
+      get :by_camis, camis: 12345678, format: :json
+      expect(assigns(:restaurant)).to match(restaurant)
+    end
+
+    it 'returns a restaurant with a valid camis' do
+      get :by_camis, camis: 12345678, format: :json
+      expect(response.content_type).to eq('application/json')
+    end
+
+    it 'returns a 400 code if the camis does not exist' do
+      get :by_camis, camis: 87654321, format: :json
+      expect(response).to_not be_success
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+  
   DatabaseCleaner.clean
 end

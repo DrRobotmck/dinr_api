@@ -19,7 +19,6 @@ module Api
     def show
       @restaurant = Restaurant.find_by(request_params)
       respond_to do |format|
-        format.html {}
         format.json {}
         format.xml  {}
       end
@@ -27,10 +26,14 @@ module Api
 
     def by_camis
       @restaurant = Restaurant.find_by(camis: params[:camis])
-      respond_to do |format|
-        format.html {}
-        format.json {}
-        format.xml  {}
+      binding.pry
+      if @restaurant
+        respond_to do |format|
+          format.json {}
+          format.xml  {}
+        end
+      else
+        render status: :unprocessable_entity, nothing: true
       end
     end
 
