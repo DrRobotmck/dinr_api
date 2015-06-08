@@ -25,8 +25,8 @@ RSpec.describe Api::RestaurantsController, type: :controller do
           current_grade: 'A',
           boro_id: boro.id,
           cuisine_id: cuisine_two.id
-          })
-        ]
+        })
+      ]
     end
     
     it 'responds successfully with an HTTP 200 status code' do
@@ -35,7 +35,7 @@ RSpec.describe Api::RestaurantsController, type: :controller do
       expect(response).to have_http_status(200)
     end
 
-    it 'loads all restaurants into @restaurants' do
+    it 'loads all restaurants into restaurants' do
       get :index, format: :json, all: 'true'
       expect(assigns(:restaurants)).to match_array(restaurants)
     end
@@ -53,6 +53,7 @@ RSpec.describe Api::RestaurantsController, type: :controller do
         expect(response.content_type).to eq('application/xml')
       end
     end
+
     context 'params provided with request' do
       it 'returns results based on params' do
         get :index, format: :json, dba: 'Subway'
@@ -79,59 +80,61 @@ RSpec.describe Api::RestaurantsController, type: :controller do
     end
   end
 
-  # describe 'GET #show' do
-  #   before :each do
-  #     boro = Boro.create!(name: 'Manhattan')
-  #     cuisine = Cuisine.create!(description: 'Filipino')
-  #     action = Action.create!(description: 'U')
-  #     @restaurant = Restaurant.create!({
-  #       dba: "Subway",
-  #       current_grade: 'A',
-  #       boro_id: boro.id,
-  #       cuisine_id: cuisine.id
-  #       })
-  #     inspection_one = Inspection.create!(score: 15)
-  #     inspection_two = Inspection.create!(score: 12)
-  #     violation_one = Violation.create!(critical_violation: true, code: '6A')
-  #     violation_two = Violation.create!(critical_violation: false, code: '6B')
-  #     inspection_one.violations << violation_one
-  #     inspection_two.violations << violation_two
-  #     action.inspections << inspection_one
-  #     action.inspections << inspection_two
-  #     @restaurant.inspections << inspection_one << inspection_two
-  #   end
-  #   it 'responds successfully with an HTTP 200 status code' do
-  #     get :show, id: @restaurant.id
-  #     expect(response).to be_success
-  #     expect(response).to have_http_status(200)
-  #   end
-  #   it 'loads all of the restaurant data into @restaurant' do
-  #     get :show, id: @restaurant.id
-  #     expect(assigns(:restaurant)).to match(@restaurant)
-  #   end
-  #   it 'responds to requests for json' do
-  #     request.env['HTTP_ACCEPT'] = 'application/json'
-  #     expected_result = @restaurant.to_json(include: {
-  #       inspections: { include: :violations }
-  #       })
-  #     get :show, id: @restaurant.id
-  #     expect(response.body).to eq(expected_result)
-  #   end
-  #   it 'responds to requests for xml' do
-  #     request.env['HTTP_ACCEPT'] = 'application/xml'
-  #     expected_result = @restaurant.to_xml(include: {
-  #       inspections: { include: :violations }
-  #       })
-  #     get :show, id: @restaurant.id
-  #     expect(response.body).to eq(expected_result)
-  #   end
-  # end
+  describe 'GET #show' do
+    restaurant = nil
+    before :each do
+      boro = Boro.create!(name: 'Manhattan')
+      cuisine = Cuisine.create!(description: 'Filipino')
+      action = Action.create!(description: 'U')
+      restaurant = Restaurant.create!({
+        dba: "Subway",
+        current_grade: 'A',
+        boro_id: boro.id,
+        cuisine_id: cuisine.id
+        })
+      inspection_one = Inspection.create!(score: 15)
+      inspection_two = Inspection.create!(score: 12)
+      violation_one = Violation.create!(critical_violation: true, code: '6A')
+      violation_two = Violation.create!(critical_violation: false, code: '6B')
+      inspection_one.violations << violation_one
+      inspection_two.violations << violation_two
+      action.inspections << inspection_one
+      action.inspections << inspection_two
+      restaurant.inspections << inspection_one << inspection_two
+    end
+    
+    it 'responds successfully with an HTTP 200 status code' do
+      get :show, id: restaurant.id
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+    
+    it 'loads all of the restaurant data into restaurant' do
+      get :show, id: restaurant.id
+      expect(assigns(:restaurant)).to match(restaurant)
+    end
+
+    context 'request is made for json' do  
+      it 'responds to requests for json' do
+        get :show, id: restaurant.id, format: :json
+        expect(response.content_type).to eq('application/json')
+      end
+    end
+    
+    context 'request is made for xml' do  
+      it 'responds to requests for xml' do
+        get :show, id: restaurant.id, format: :xml
+        expect(response.content_type).to eq('application/xml')
+      end
+    end
+  end
+
   # describe 'GET #by_camis' do
   #   before :each do
   #     boro = Boro.create!(name: 'Manhattan')
   #     cuisine = Cuisine.create!(description: 'Filipino')
   #     action = Action.create!(description: 'U')
-  #     @restaurant = Restaurant.create!({
+  #     restaurant = Restaurant.create!({
   #       camis: 12345678,
   #       dba: "Subway",
   #       current_grade: 'A',
@@ -146,20 +149,20 @@ RSpec.describe Api::RestaurantsController, type: :controller do
   #     inspection_two.violations << violation_two
   #     action.inspections << inspection_one
   #     action.inspections << inspection_two
-  #     @restaurant.inspections << inspection_one << inspection_two
+  #     restaurant.inspections << inspection_one << inspection_two
   #   end
   #   it 'responds successfully with an HTTP 200 status code' do
   #     expect(response).to be_success
   #     expect(response).to have_http_status(200)
   #   end
-  #   it 'loads the restaurant data into @restaurant' do
+  #   it 'loads the restaurant data into restaurant' do
   #     get :by_camis, camis: 12345678
-  #     expect(assigns(:restaurant)).to match(@restaurant)
+  #     expect(assigns(:restaurant)).to match(restaurant)
   #   end
   #   context 'returns a restaurant based on camis number' do
   #     it 'returns a restaurant with a valid camis' do
   #       request.env['HTTP_ACCEPT'] = 'application/json'
-  #       expected_result = @restaurant.to_json(include: {
+  #       expected_result = restaurant.to_json(include: {
   #         inspections: { include: :violations }
   #         })
   #       get :by_camis, camis: 12345678
