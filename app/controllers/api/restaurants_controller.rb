@@ -3,13 +3,14 @@ module Api
 
     def index
       param_regex = /(dba|cuisine|boro|current_grade|zip_code)/
-      if request.params[:all] == 'true'
+      if params[:all] == 'true'
         @restaurants = Restaurant.all
       elsif request_params.keys.join(',').match param_regex
         @restaurants = Restaurant.fetch(request_params)
+      else
+        @restaurants = Restaurant.limit(50)
       end
       respond_to do |format|
-        format.html {}
         format.json {}
         format.xml  {}
       end
